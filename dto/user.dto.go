@@ -16,11 +16,12 @@ type GetDTO struct {
 }
 
 type UpdateDTO struct {
-	ID     string `json:"id" form:"id" binding:"required"`
-	Name   string `json:"name" form:"name" binding:"required"`
-	Rfid   string `json:"rfid" form:"rfid" binding:"required"`
-	Email  string `json:"email" form:"email" binding:"required,email"`
-	Status bool   `json:"status" form:"status" binding:"required"`
+	ID           string `json:"id" form:"id" binding:"required"`
+	Name         string `json:"name" form:"name" binding:"required"`
+	Rfid         string `json:"rfid" form:"rfid" binding:"required"`
+	Email        string `json:"email" form:"email" binding:"required,email"`
+	Status       bool   `json:"status" form:"status" binding:"required"`
+	AccessStatus bool   `json:"access" form:"access" binding:"required"`
 }
 
 type DeleteDTO struct {

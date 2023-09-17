@@ -3,13 +3,14 @@ package models
 import "time"
 
 type User struct {
-	ID        uint64 `gorm:"primary_key:auto_increment" json:"id"`
-	Name      string `gorm:"type:varchar(255)" json:"name"`
-	Email     string `gorm:"type:varchar(255)" json:"email"`
-	Rfid      string `gorm:"uniqueIndex;type:varchar(255)" json:"rfid"`
-	Status    bool   `gorm:"bool" json:"status"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID           uint64 `gorm:"primary_key:auto_increment" json:"id"`
+	Name         string `gorm:"type:varchar(255)" json:"name"`
+	Email        string `gorm:"type:varchar(255)" json:"email"`
+	Rfid         string `gorm:"uniqueIndex;type:varchar(255)" json:"rfid"`
+	Status       bool   `gorm:"bool" json:"status"`
+	AccessStatus bool   `gorm:"bool" json:"access"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
 
 // Rfid string `gorm:"->; <-;not null" json:"-"` uniqueIndex

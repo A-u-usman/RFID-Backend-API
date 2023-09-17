@@ -30,6 +30,17 @@ var (
 func main() {
 
 	r := gin.Default()
+
+	r.Static("/templates", "./templates/")
+	r.LoadHTMLGlob("templates/*.html")
+	userViews := r.Group("/view")
+	{
+		userViews.GET("/users", userController.ShowUsers)
+		userViews.GET("/access-activity", userController.ShowUsersActivity)
+		userViews.GET("/add-user", userController.ShowUserForm)
+		userViews.POST("/add-user", userController.SaveUser)
+		userViews.GET("enable-disable/:rfid", userController.EnableDisableUser)
+	}
 	userRoutes := r.Group("api/rfid")
 	{
 		// authRoutes.POST("/login", authController.Login)

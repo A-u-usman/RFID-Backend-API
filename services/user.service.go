@@ -12,9 +12,13 @@ import (
 
 type UserService interface {
 	// InsertUser(user models.User) models.User
+	AllUserActivity() []models.UserActivityLog
 	CreateUser(user dto.RegisterDTO) models.User
+	RecordActivity(user models.User)
 	IsDuplicateRfid(rfid string) bool
+	FindUserByRfid(rfid string) interface{}
 	UpdateUser(c dto.UpdateDTO) models.User
+	UpdateAccessStatus(c models.User) models.User
 	DeleteUser(c dto.DeleteDTO)
 	AllUser() []models.User
 	FindUserByID(userID string) models.User
@@ -44,6 +48,13 @@ func UserServiceImp(userRep repository.UserRepository) UserService {
 	}
 }
 
+//******view service************
+
+func (service *userService) AllUserActivity() []models.UserActivityLog {
+	return service.userRepository.AllUsersActivity()
+}
+
+// *******endview*************
 func (service *userService) CreateUser(user dto.RegisterDTO) models.User {
 	userToCreate := models.User{}
 	err := smapping.FillStruct(&userToCreate, smapping.MapFields(&user))
@@ -54,11 +65,32 @@ func (service *userService) CreateUser(user dto.RegisterDTO) models.User {
 	return res
 }
 
+func (service *userService) RecordActivity(user models.User) {
+
+	userToCreate := models.UserActivityLog{}
+	userToCreate.Name = user.Name
+	userToCreate.Email = user.Email
+	userToCreate.AccessStatus = user.AccessStatus
+	userToCreate.Status = user.Status
+	userToCreate.Rfid = user.Rfid
+	// err := smapping.FillStruct(&userToCreate, smapping.MapFields(&user))
+	// if err != nil {
+	// 	log.Fatalf("Failed map %v", err)
+	// }
+	// userToCreate.UserID = user.ID
+	service.userRepository.RecordActivity(userToCreate)
+}
+
 func (service *userService) IsDuplicateRfid(rfid string) bool {
 	res := service.userRepository.IsDuplicateRfid(rfid)
 	log.Println(res.Error)
 	return !(res.Error == nil)
 
+}
+
+func (service *userService) FindUserByRfid(rfid string) interface{} {
+	res := service.userRepository.FindUserByRfid(rfid)
+	return res
 }
 
 func (service *userService) AllUser() []models.User {
@@ -88,6 +120,16 @@ func (service *userService) IsAllowedToEditUser(userID string) bool {
 }
 
 func (service *userService) UpdateUser(c dto.UpdateDTO) models.User {
+	user := models.User{}
+	err := smapping.FillStruct(&user, smapping.MapFields(&c))
+	if err != nil {
+		log.Fatalf("Failed map %v:", err)
+	}
+	res := service.userRepository.UpdateUser(user)
+	return res
+}
+
+func (service *userService) UpdateAccessStatus(c models.User) models.User {
 	user := models.User{}
 	err := smapping.FillStruct(&user, smapping.MapFields(&c))
 	if err != nil {

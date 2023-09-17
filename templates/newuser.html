@@ -1,0 +1,90 @@
+{{ template "header.html" }}
+
+<div class="container">
+    <div class="" id="">
+            <p class="lead" id="formRow">New  User Form</p>
+            <div class="">    
+                {{ if  .message }}
+                    {{.message}}
+                {{ end }}
+                <form action="" method="post" > 
+                    <div class="row">
+                    <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="word">NAME</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            class="form-control"
+                            placeholder="Enter Name "
+                            required
+                            >
+                    </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                    <label for="word">EMAIL</label>
+                                    <input
+                                        type="text"
+                                        name="email"
+                                        id="email"
+                                        class="form-control"
+                                        placeholder="Enter Email"
+                                        >
+                            </div>
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="word">RFID</label>
+                            <input
+                                type="text"
+                                name="rfid"
+                                id="rfid"
+                                class="form-control"
+                                placeholder="Enter RFID"
+                                required
+                                >
+                        </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" id="radioinput">
+                                <label for="status-group">Satus</label>
+                                <div class="status-group">                            <input
+                                    type="radio"
+                                    name="status"
+                                    id="status1"
+                                    value=true
+                                    class=""
+                                    required
+                                    >
+                                <label for="gender">Active</label>
+                                    <input
+                                        type="radio"
+                                        name="status"
+                                        id="status2"
+                                        value=false
+                                        class=""
+                                        >
+                                        <label for="status2">Inactive</label>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg" id="reg-btn">submit</button>
+                </form>
+                        
+             </div>
+
+        </div>
+    </div>
+{{ template "footer.html" }}

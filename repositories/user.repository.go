@@ -10,8 +10,11 @@ import (
 )
 
 type UserRepository interface {
+	AllUsersActivity() []models.UserActivityLog
 	InsertUser(user models.User) models.User
+	RecordActivity(user models.UserActivityLog) models.UserActivityLog
 	IsDuplicateRfid(rfid string) (tx *gorm.DB)
+	FindUserByRfid(rfid string) interface{}
 	UpdateUser(user models.User) models.User
 	DeleteUser(user models.User)
 	AllUsers() []models.User
@@ -43,7 +46,22 @@ func UserRepositoryImp(db *gorm.DB) UserRepository {
 	}
 }
 
+// ******view repo
+func (db *userConnection) AllUsersActivity() []models.UserActivityLog {
+	var users []models.UserActivityLog
+	db.connection.Find(&users)
+	return users
+}
+
+// *******end view
 func (db *userConnection) InsertUser(user models.User) models.User {
+	// user.Rfid = hashAndSalt([]byte(user.Rfid))
+	user.AccessStatus = false
+	db.connection.Save(&user)
+	return user
+}
+
+func (db *userConnection) RecordActivity(user models.UserActivityLog) models.UserActivityLog {
 	// user.Rfid = hashAndSalt([]byte(user.Rfid))
 	db.connection.Save(&user)
 	return user
@@ -69,6 +87,13 @@ func (db *userConnection) DeleteUser(user models.User) {
 func (db *userConnection) FindUserByID(userID string) models.User {
 	var user models.User
 	db.connection.Find(&user, userID)
+	return user
+}
+
+func (db *userConnection) FindUserByRfid(rfid string) interface{} {
+	var user models.User
+	// db.connection.Find(&user, userID)
+	db.connection.Where("rfid = ? and status=true", rfid).Take(&user)
 	return user
 }
 

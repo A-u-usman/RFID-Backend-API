@@ -1,0 +1,44 @@
+{{ template "header.html" }}
+
+<div class="container">
+    <div class=" " id="">
+               <p class="lead" id="formRow">All Registerd Users</p>
+            <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table indexTable  table-striped text-center table-bordered">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>CreatedAt</th>
+                                <th></th>
+                                <th></th>
+                                <!-- <th>UpdatedAt</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ range $i, $user := .users}}
+                            <tr>
+                                <td>{{ ($i) }}</td>
+                                <td>{{$user.Name}}</td>
+                                <td>{{$user.Email}}</td>
+                                <td>{{$user.Status}}</td>
+                                <td>{{$user.CreatedAt}}</td>
+                                <td><button type="button" onclick='location.href = "/view/enable-disable/{{$user.ID}}"' >Enable</button></td>
+                                <td><button type="button" onclick='location.href = "/view/enable-disable/{{$user.ID}}"' >Disable</button></td>
+                                <!-- <td>{{.UpdatedAt}}</td>  -->
+                            </tr>
+                        {{ end }}
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+
+        </div>
+    </div>
+{{ template "footer.html" }}
