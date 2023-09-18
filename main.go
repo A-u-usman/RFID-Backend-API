@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/A-u-usman/RFID-Backend-API.git/config"
 	"github.com/A-u-usman/RFID-Backend-API.git/controllers"
 	repository "github.com/A-u-usman/RFID-Backend-API.git/repositories"
@@ -97,7 +99,11 @@ func main() {
 	// {
 	// 	swggerRoute.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// }
+	port := os.Getenv("PORT")
 
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	if port == "" {
+		port = "8080"
+	}
+	r.Run("0.0.0.0:" + port) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 	// //online host = https://school-lite.fly.dev/
 }
