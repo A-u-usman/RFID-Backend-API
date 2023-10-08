@@ -96,8 +96,7 @@ func (c *userController) SaveUser(ctx *gin.Context) {
 		return
 	} else {
 		c.userService.CreateUser(registerDTO)
-		// token := c.jwtService.GenerateToken(strconv.FormatUint(createdUser.ID, 10))
-		// createdUser.Token = token
+
 		data := gin.H{
 			"message": "User Successfully registered",
 		}
