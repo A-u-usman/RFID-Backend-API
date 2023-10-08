@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"github.com/A-u-usman/RFID-Backend-API.git/config"
 	"github.com/A-u-usman/RFID-Backend-API.git/controllers"
 	repository "github.com/A-u-usman/RFID-Backend-API.git/repositories"
@@ -18,12 +16,12 @@ var (
 	// 	subCategoryRepository repository.SubCategoryRepository  = repository.SubCategoryRepositoryImp(db)
 	// 	producRepository      repository.ProductRepository      = repository.ProductImp(db)
 	// 	jwtService            services.JWTService               = services.JWTServiceImp()
-	// 	mailService           services.MailService              = services.MailServiceImp()
+	mailService services.MailService = services.MailServiceImp()
 	userService services.UserService = services.UserServiceImp(userRepository)
 	// 	categoryService       services.CategoryService          = services.CategoryServiceImp(categoryRepository)
 	// 	subCategoryService    services.SubCategoryService       = services.SubCategoryServiceImp(subCategoryRepository, categoryRepository)
 	// 	productService        services.ProductService           = services.ProductServiceImp(producRepository, subCategoryRepository, categoryRepository)
-	userController controllers.UserController = controllers.UserControllerImp(userService) // mailService
+	userController controllers.UserController = controllers.UserControllerImp(userService, mailService) // mailService
 	// 	categoryController    controllers.CategoryController    = controllers.CategoryControllerImp(categoryService, jwtService)
 	// 	subCategoryController controllers.SubCategoryController = controllers.SubCategoryControllerImp(categoryService, subCategoryService, jwtService)
 	// 	productController     controllers.ProductController     = controllers.ProductControllerImp(categoryService, subCategoryService, productService, jwtService)
@@ -99,11 +97,12 @@ func main() {
 	// {
 	// 	swggerRoute.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// }
-	port := os.Getenv("PORT")
+	// port := os.Getenv("PORT")
 
-	if port == "" {
-		port = "8080"
-	}
-	r.Run("0.0.0.0:" + port) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	// if port == "" {
+	// 	port = "8080"
+	// }
+	// r.Run("0.0.0.0:" + port)
+	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 	// //online host = https://school-lite.fly.dev/
 }

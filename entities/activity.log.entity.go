@@ -8,8 +8,8 @@ type UserActivityLog struct {
 	Name         string `gorm:"type:varchar(255)" json:"name"`
 	Email        string `gorm:"unique:false;type:varchar(255)" json:"email"`
 	Rfid         string `gorm:"unique:false;type:varchar(255)" json:"rfid"`
-	Status       bool   `gorm:"type:varchar(255)" json:"status"`
-	AccessStatus bool   `gorm:"type:varchar(255)" json:"access"`
+	Status       bool   `gorm:"bool" json:"status"`
+	AccessStatus bool   `gorm:"bool" json:"access"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	// UserEmail string `gorm:"primaryKey;autoIncrment:false;uniqueIndex;type:varchar(255);not null" json:"email"`

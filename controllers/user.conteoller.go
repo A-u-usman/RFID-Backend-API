@@ -37,15 +37,15 @@ type UserController interface {
 type userController struct {
 	userService services.UserService
 	// jwtService  services.JWTService
-	// mailService services.MailService
+	mailService services.MailService
 }
 
 // mailService services.MailService to be addede letter
-func UserControllerImp(userService services.UserService) UserController {
+func UserControllerImp(userService services.UserService, mailService services.MailService) UserController {
 	return &userController{
 		userService: userService,
 		// jwtService:  jwtService,
-		// mailService: mailService,
+		mailService: mailService,
 	}
 }
 
@@ -247,8 +247,11 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 				intruder.Rfid = rfid
 				intruder.Name = "Blocked User"
 				c.userService.RecordActivity(models.User(intruder))
+				mgs := c.mailService.GenerateIntruderNotificationMessage(intruder.Rfid)
+				mailSubjet := "Blocked User Access Attempt"
+				c.mailService.SendMail(mgs, mailSubjet, "muhammadabdullahi190@gmail.com")
 				response := getstruct{Message: "false",
-					Access: "intruder",
+					Access: "Blocked User intruder",
 				}
 				ctx.JSON(http.StatusConflict, response)
 				return
@@ -283,6 +286,9 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 		intruder.Rfid = rfid
 		intruder.Name = "Intruder"
 		c.userService.RecordActivity(models.User(intruder))
+		mgs := c.mailService.GenerateIntruderNotificationMessage(intruder.Rfid)
+		mailSubjet := "Intruder Access Attempt"
+		c.mailService.SendMail(mgs, mailSubjet, "muhammadabdullahi190@gmail.com")
 		response := getstruct{Message: "false",
 			Access: "intruder",
 		}
@@ -292,6 +298,9 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 		var intruder models.UserActivityLog
 		intruder.Rfid = rfid
 		intruder.Name = "Intruder"
+		mgs := c.mailService.GenerateIntruderNotificationMessage(intruder.Rfid)
+		mailSubjet := "Intruder Access Attempt"
+		c.mailService.SendMail(mgs, mailSubjet, "muhammadabdullahi190@gmail.com")
 		c.userService.RecordActivity(models.User(intruder))
 		response := getstruct{Message: "false",
 			Access: "intruder",
