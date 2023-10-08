@@ -10,6 +10,7 @@ type UserActivityLog struct {
 	Rfid         string `gorm:"unique:false;type:varchar(255)" json:"rfid"`
 	Status       bool   `gorm:"bool" json:"status"`
 	AccessStatus bool   `gorm:"bool" json:"access"`
+	DoorStatus   string `gorm:"unique:false;type:varchar(255)" json:"door"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	// UserEmail string `gorm:"primaryKey;autoIncrment:false;uniqueIndex;type:varchar(255);not null" json:"email"`

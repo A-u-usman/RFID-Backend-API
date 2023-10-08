@@ -96,7 +96,8 @@ func (c *userController) SaveUser(ctx *gin.Context) {
 		return
 	} else {
 		c.userService.CreateUser(registerDTO)
-
+		// token := c.jwtService.GenerateToken(strconv.FormatUint(createdUser.ID, 10))
+		// createdUser.Token = token
 		data := gin.H{
 			"message": "User Successfully registered",
 		}
@@ -245,7 +246,8 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 				var intruder models.UserActivityLog
 				intruder.Rfid = rfid
 				intruder.Name = "Blocked User"
-				c.userService.RecordActivity(models.User(intruder))
+				intruder.DoorStatus = "close"
+				c.userService.RecordActivity(intruder)
 				mgs := c.mailService.GenerateIntruderNotificationMessage(intruder.Rfid)
 				mailSubjet := "Blocked User Access Attempt"
 				c.mailService.SendMail(mgs, mailSubjet, "muhammadabdullahi190@gmail.com")
@@ -261,7 +263,14 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 					//change access to false (outside)
 					c.userService.UpdateAccessStatus(v)
 					//save activity
-					c.userService.RecordActivity(v)
+					var user models.UserActivityLog
+					user.AccessStatus = v.AccessStatus
+					user.DoorStatus = "Close"
+					user.Email = v.Email
+					user.Name = v.Name
+					user.Rfid = v.Rfid
+					user.Status = v.Status
+					c.userService.RecordActivity(user)
 					//return response
 					response := getstruct{Message: "true",
 						Access: "close",
@@ -272,7 +281,14 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 				v.AccessStatus = true
 				c.userService.UpdateAccessStatus(v)
 				//save activity***************
-				c.userService.RecordActivity(v)
+				var user models.UserActivityLog
+				user.AccessStatus = v.AccessStatus
+				user.DoorStatus = "Open"
+				user.Email = v.Email
+				user.Name = v.Name
+				user.Rfid = v.Rfid
+				user.Status = v.Status
+				c.userService.RecordActivity(user)
 				//return response*************
 				response := getstruct{Message: "true",
 					Access: "open",
@@ -284,7 +300,8 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 		var intruder models.UserActivityLog
 		intruder.Rfid = rfid
 		intruder.Name = "Intruder"
-		c.userService.RecordActivity(models.User(intruder))
+		intruder.DoorStatus = "close"
+		c.userService.RecordActivity(intruder)
 		mgs := c.mailService.GenerateIntruderNotificationMessage(intruder.Rfid)
 		mailSubjet := "Intruder Access Attempt"
 		c.mailService.SendMail(mgs, mailSubjet, "muhammadabdullahi190@gmail.com")
@@ -297,10 +314,11 @@ func (c *userController) FindUserByID(ctx *gin.Context) {
 		var intruder models.UserActivityLog
 		intruder.Rfid = rfid
 		intruder.Name = "Intruder"
+		intruder.DoorStatus = "close"
 		mgs := c.mailService.GenerateIntruderNotificationMessage(intruder.Rfid)
 		mailSubjet := "Intruder Access Attempt"
 		c.mailService.SendMail(mgs, mailSubjet, "muhammadabdullahi190@gmail.com")
-		c.userService.RecordActivity(models.User(intruder))
+		c.userService.RecordActivity(intruder)
 		response := getstruct{Message: "false",
 			Access: "intruder",
 		}

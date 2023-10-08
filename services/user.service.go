@@ -14,7 +14,7 @@ type UserService interface {
 	// InsertUser(user models.User) models.User
 	AllUserActivity() []models.UserActivityLog
 	CreateUser(user dto.RegisterDTO) models.User
-	RecordActivity(user models.User)
+	RecordActivity(user models.UserActivityLog)
 	IsDuplicateRfid(rfid string) bool
 	FindUserByRfid(rfid string) interface{}
 	UpdateUser(c dto.UpdateDTO) models.User
@@ -65,20 +65,20 @@ func (service *userService) CreateUser(user dto.RegisterDTO) models.User {
 	return res
 }
 
-func (service *userService) RecordActivity(user models.User) {
+func (service *userService) RecordActivity(user models.UserActivityLog) {
 
-	userToCreate := models.UserActivityLog{}
-	userToCreate.Name = user.Name
-	userToCreate.Email = user.Email
-	userToCreate.AccessStatus = user.AccessStatus
-	userToCreate.Status = user.Status
-	userToCreate.Rfid = user.Rfid
+	// userToCreate := models.UserActivityLog{}
+	// userToCreate.Name = user.Name
+	// userToCreate.Email = user.Email
+	// userToCreate.AccessStatus = user.AccessStatus
+	// userToCreate.Status = user.Status
+	// userToCreate.Rfid = user.Rfid
 	// err := smapping.FillStruct(&userToCreate, smapping.MapFields(&user))
 	// if err != nil {
 	// 	log.Fatalf("Failed map %v", err)
 	// }
 	// userToCreate.UserID = user.ID
-	service.userRepository.RecordActivity(userToCreate)
+	service.userRepository.RecordActivity(user)
 }
 
 func (service *userService) IsDuplicateRfid(rfid string) bool {
